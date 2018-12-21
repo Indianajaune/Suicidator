@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 #include "libcsv/csv.h"
 
 
