@@ -36,20 +36,16 @@ int main(int argc, char *argv[]) {
     struct tm * timeinfo;
     unsigned int year;
     int choice;
-
-
-    menu(&choice);
-
-/*
+    
     FILE *fp;
     struct csv_parser p;
     char buf[1024];
     size_t bytes_read;
     unsigned char options = 0;
     struct counts c = {0, 0};
-*/
 
-/*
+
+
     if (argc < 2) {
       fprintf(stderr, "Usage: infosuicide [-s] files\n");
       exit(EXIT_FAILURE);
@@ -59,6 +55,7 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Failed to initialize csv parser\n");
       exit(EXIT_FAILURE);
     }
+    menu(&choice);
 
     csv_set_space_func(&p, is_space);
     csv_set_term_func(&p, is_term);
@@ -97,7 +94,7 @@ int main(int argc, char *argv[]) {
     csv_free(&p);
     exit(EXIT_SUCCESS);
 
-*/
+
 
 
     switch(choice){
