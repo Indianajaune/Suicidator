@@ -24,26 +24,32 @@ static int is_term(unsigned char c) {
 int main(int argc, char *argv[]) {
 
 
-    typedef struct request {
+    typedef struct person {
         unsigned short int age;
         bool sex;
         char* country;
         unsigned int year;
-    }request;
+    }PERSON;
 
-    request q;
+    PERSON q;
     char *sex ="M";
     struct tm * timeinfo;
     unsigned int year;
-    unsigned short int choice;
+    int choice;
 
+
+    menu(&choice);
+
+/*
     FILE *fp;
     struct csv_parser p;
     char buf[1024];
     size_t bytes_read;
     unsigned char options = 0;
     struct counts c = {0, 0};
+*/
 
+/*
     if (argc < 2) {
       fprintf(stderr, "Usage: infosuicide [-s] files\n");
       exit(EXIT_FAILURE);
@@ -91,7 +97,7 @@ int main(int argc, char *argv[]) {
     csv_free(&p);
     exit(EXIT_SUCCESS);
 
-
+*/
 
 
     switch(choice){
@@ -158,14 +164,7 @@ int main(int argc, char *argv[]) {
         scanf("%f", year);
         q.year = year;
     default :
-        printf("Bienvenue dans l'application InfoSuicide : \n");
-        printf("Menu : \n");
-        printf("0. Quitter l'application");
-        printf("1. Nombre de suicides selon des critères");
-        printf("2. Afficher le taux de suicide par année d'un pays");
-        printf("3. Afficher la répartition de suicides par sexe pour un pays");
-        printf("4. Trier (et afficher) les taux de suicide par ordre décroissant");
-        printf("5. Calculer le taux de possibilité de suicide selon des critères (naive bayes)");
+        printf("test");
     }
 
 }
