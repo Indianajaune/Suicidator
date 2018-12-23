@@ -16,6 +16,8 @@ static int is_term(unsigned char c) {
 
 int main(int argc, char *argv[]) {
     system("clear");
+    clock_t t;
+    t=clock();
     FILE *fp;
     struct csv_parser p;
     char buf[1024];
@@ -33,10 +35,7 @@ int main(int argc, char *argv[]) {
       exit(EXIT_FAILURE);
     }
 
-    PERSON q;
-    char *sex ="M";
-    struct tm * timeinfo;
-    unsigned int year;
+    //PERSON q;
     int choice;
 
 
@@ -52,20 +51,20 @@ int main(int argc, char *argv[]) {
 
       fp = fopen(*argv, "rb");
       if (!fp) {
-        fprintf(stderr, "Failed to open %s: %s\n", *argv, strerror(errno));
+        fprintf(stderr, "Echec de l'ouverture de %s: %s\n", *argv, strerror(errno));
         continue;
       }
 
       while ((bytes_read=fread(buf, 1, 1024, fp)) > 0) {
-        if (csv_parse(&p, buf, bytes_read, cb1, cb2, &c) != bytes_read) {
-          fprintf(stderr, "Error while parsing file: %s\n", csv_strerror(csv_error(&p)));
+        if (csv_parse(&p, buf, bytes_read, field_counter, row_counter, &c) != bytes_read) {
+          fprintf(stderr, "Erreur lors de l'analyse du fichier: %s\n", csv_strerror(csv_error(&p)));
         }
       }
 
-      csv_fini(&p, cb1, cb2, &c);
+      csv_fini(&p, field_counter, row_counter, &c);
 
       if (ferror(fp)) {
-        fprintf(stderr, "Error while reading file %s\n", *argv);
+        fprintf(stderr, "Erreur de lecture de %s\n", *argv);
         fclose(fp);
         continue;
       }
@@ -74,18 +73,33 @@ int main(int argc, char *argv[]) {
 
     }
     csv_free(&p);
+    t = clock()-t;
+    printf("Fichier countenant %lu colonnes et %lu lignes \n",c.fields,c.rows);
+    printf("Initialise en %ld ticks (%f seconds) \n",t,((float)t)/CLOCKS_PER_SEC);
+    sleep(3);
+    if((c.fields==0)||(c.rows==0)){
+      exit(EXIT_FAILURE);
+    }
     menu(&choice);
-    exit(EXIT_SUCCESS);
+
 
 
     switch(choice){
 
     case 0 :
+        exit(EXIT_SUCCESS);
         return(0);
         break;
     case 1 :
 
-        printf("\e[1;1H\e[2J");
+        fp = fopen(*argv, "r");
+        if (!fp) {
+          fprintf(stderr, "Echec de l'ouverture de %s: %s\n", *argv, strerror(errno));
+        }
+
+        fclose(fp);
+      /*
+        system("clear");
         printf("Veuillez entrer vos donnees : \n");
         printf("Votre age : \n");
         scanf("%d", &q.age);
@@ -96,9 +110,11 @@ int main(int argc, char *argv[]) {
         printf("Votre annee : \n");
         scanf("%f", year);
         q.year = year;
+        */
         break;
     case 2 :
-        printf("\e[1;1H\e[2J");
+    /*
+        system("clear");
         printf("Veuillez entrer vos donnees : \n");
         printf("\n Votre Pays : \n");
         scanf("%s", &q.country);
@@ -106,16 +122,20 @@ int main(int argc, char *argv[]) {
         printf("Votre annee : \n");
         scanf("%f", year);
         q.year = year;
+        */
         break;
     case 3 :
+    /*
         printf("\n Votre Pays : \n");
         scanf("%s", &q.country);
         country_checker(q.country);
+        */
         break;
     case 4 :
         break;
     case 5 :
-        printf("\e[1;1H\e[2J");
+    /*
+        system("clear");
         printf("Veuillez entrer vos donnees : \n");
         printf("Votre age : \n");
         scanf("%d", &q.age);
@@ -136,6 +156,7 @@ int main(int argc, char *argv[]) {
         printf("Votre annee : \n");
         scanf("%f", year);
         q.year = year;
+        */
         break;
     default :
         printf("test");

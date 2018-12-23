@@ -2,8 +2,9 @@
 
 
 
-void cb1 (void *s, size_t len, void *data) {
-  static unsigned short int i;
+void field_counter (void *s, size_t len, void *data) {
+   ((struct counts *)data)->fields++;
+  /*static unsigned short int i;
   if(((i==0)||(i==1)||(i==2)||(i==3)||(i==4)||(i==5))^true)
   {
     i=0;
@@ -17,14 +18,15 @@ void cb1 (void *s, size_t len, void *data) {
   sleep(1);
   }
   i++;
+  */
 }
-void cb2 (int c, void *data) {
-  static long unsigned i=0;
-  i++;
-  ((struct counts *)data)->rows=i;
+void row_counter (int c, void *data) {
+  ((struct counts *)data)->rows++;
  }
 
-void country_loader (void *s, size_t len, void *data) { ((struct counts *)data)->fields++; }
+void country_loader(FILE * csv){
+  
+}
 
 bool country_checker(char* entry){
   if(strcmp(entry,"France")==0){

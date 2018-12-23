@@ -1,3 +1,5 @@
+//utilisation du C11 lors de la compilation pour permettre les commentaires en "//"
+#include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -6,6 +8,7 @@
 #include <unistd.h>
 #include "libcsv/csv.h"
 
+//utilise pour coloriser le terminal
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
@@ -15,6 +18,7 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
+//wrapper utilise pour rentrer une personne age est compris
 typedef struct person {
     unsigned short int age;
     bool sex;
@@ -22,16 +26,27 @@ typedef struct person {
     unsigned int year;
 }PERSON;
 
+//encapsulation d'une personne dans une entree (qui correspond en fait a une ligne du csv)
+typedef struct entry {
+    PERSON dead;
+    int number;
+}ENTRY;
+
+//utilise pour compter les lignes et colonnes
 struct counts {
   long unsigned fields;
   long unsigned rows;
 };
 
-void cb1 (void *s, size_t len, void *data);
-void cb2 (int c, void *data);
+//fonctions dites "callback" utilisees pour compter les lignes et colonnes lors de l'appel de csv_parse()
+void field_counter (void *s, size_t len, void *data);
+void row_counter (int c, void *data);
 
+//sert a verifier si le pays est valide
 bool country_checker(char*);
 
+//sert a a demander a l'utilisateur le sexe en format "M/F" pour ensuite le restituer en booleen
 bool sex_asker();
 
+//sert a afficher le menu
 void menu(int*);
