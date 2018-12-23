@@ -2,13 +2,6 @@
 
 
 
-struct counts {
-  long unsigned fields;
-  long unsigned rows;
-};
-
-void cb1 (void *s, size_t len, void *data) { ((struct counts *)data)->fields++; }
-void cb2 (int c, void *data) { ((struct counts *)data)->rows++; }
 
 static int is_space(unsigned char c) {
   if (c == CSV_SPACE || c == CSV_TAB) return 1;
@@ -22,21 +15,7 @@ static int is_term(unsigned char c) {
 
 
 int main(int argc, char *argv[]) {
-
-
-    typedef struct person {
-        unsigned short int age;
-        bool sex;
-        char* country;
-        unsigned int year;
-    }PERSON;
-
-    PERSON q;
-    char *sex ="M";
-    struct tm * timeinfo;
-    unsigned int year;
-    int choice;
-    
+    system("clear");
     FILE *fp;
     struct csv_parser p;
     char buf[1024];
@@ -44,18 +23,22 @@ int main(int argc, char *argv[]) {
     unsigned char options = 0;
     struct counts c = {0, 0};
 
-
-
     if (argc < 2) {
-      fprintf(stderr, "Usage: infosuicide [-s] files\n");
+      fprintf(stderr, "Utilisation: ./infosuicide [-s] files\n");
       exit(EXIT_FAILURE);
     }
 
     if (csv_init(&p, options) != 0) {
-      fprintf(stderr, "Failed to initialize csv parser\n");
+      fprintf(stderr, "Echec de l'initialisation de l'analyseur CSV \n");
       exit(EXIT_FAILURE);
     }
-    menu(&choice);
+
+    PERSON q;
+    char *sex ="M";
+    struct tm * timeinfo;
+    unsigned int year;
+    int choice;
+
 
     csv_set_space_func(&p, is_space);
     csv_set_term_func(&p, is_term);
@@ -88,41 +71,32 @@ int main(int argc, char *argv[]) {
       }
 
       fclose(fp);
-      printf("%s: %lu fields, %lu rows\n", *argv, c.fields, c.rows);
+
     }
-
     csv_free(&p);
+    menu(&choice);
     exit(EXIT_SUCCESS);
-
-
 
 
     switch(choice){
 
     case 0 :
         return(0);
+        break;
     case 1 :
 
         printf("\e[1;1H\e[2J");
         printf("Veuillez entrer vos donnees : \n");
         printf("Votre age : \n");
         scanf("%d", &q.age);
-        printf("\n Votre sexe (M/F) : \n");
-        scanf("%d", sex);
-        if ((strcmp(sex, "M" != 0) && (strcmp(sex, "F") != 0))){
-            scanf("%d", sex);
-        }else if (strcmp(sex, "F") == 0) {
-            q.sex = true;
-        }else if (strcmp(sex, "M") == 0) {
-                q.sex = false;
-            }
+        q.sex=sex_asker();
         printf("\n Votre Pays : \n");
             scanf("%s", &q.country);
             country_checker(q.country);
         printf("Votre annee : \n");
         scanf("%f", year);
         q.year = year;
-
+        break;
     case 2 :
         printf("\e[1;1H\e[2J");
         printf("Veuillez entrer vos donnees : \n");
@@ -132,12 +106,14 @@ int main(int argc, char *argv[]) {
         printf("Votre annee : \n");
         scanf("%f", year);
         q.year = year;
+        break;
     case 3 :
         printf("\n Votre Pays : \n");
         scanf("%s", &q.country);
         country_checker(q.country);
+        break;
     case 4 :
-
+        break;
     case 5 :
         printf("\e[1;1H\e[2J");
         printf("Veuillez entrer vos donnees : \n");
@@ -145,7 +121,7 @@ int main(int argc, char *argv[]) {
         scanf("%d", &q.age);
         printf("\n Votre sexe (M/F) : \n");
         scanf("%d", sex);
-        if ((strcmp(sex, "M" != 0) && (strcmp(sex, "F") != 0))) {
+        if ((strcmp(sex, "M") != 0) && (strcmp(sex, "F") != 0)) {
             scanf("%d", sex);
         }
         else if (strcmp(sex, "F") == 0) {
@@ -160,8 +136,10 @@ int main(int argc, char *argv[]) {
         printf("Votre annee : \n");
         scanf("%f", year);
         q.year = year;
+        break;
     default :
         printf("test");
+        break;
     }
 
 }

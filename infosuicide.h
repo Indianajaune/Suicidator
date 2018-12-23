@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
+#include <unistd.h>
 #include "libcsv/csv.h"
 
 #define KNRM  "\x1B[0m"
@@ -14,7 +15,23 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
+typedef struct person {
+    unsigned short int age;
+    bool sex;
+    char* country;
+    unsigned int year;
+}PERSON;
+
+struct counts {
+  long unsigned fields;
+  long unsigned rows;
+};
+
+void cb1 (void *s, size_t len, void *data);
+void cb2 (int c, void *data);
 
 bool country_checker(char*);
+
+bool sex_asker();
 
 void menu(int*);
