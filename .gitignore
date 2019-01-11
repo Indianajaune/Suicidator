@@ -3,4 +3,5 @@
 *.lib
 *.csv
 libcsv/
+darknet/
 infosuicide

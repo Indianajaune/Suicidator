@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     }
     csv_free(&p);
     t = clock()-t;
-    printf("Fichier countenant %lu colonnes et %lu lignes \n",c.fields,c.rows);
+    printf("%sFichier countenant %lu colonnes et %lu lignes \n",KYEL,c.fields,c.rows);
     printf("Initialise en %ld ticks (%f seconds) \n",t,((float)t)/CLOCKS_PER_SEC);
     sleep(3);
     if((c.fields==0)||(c.rows==0)){

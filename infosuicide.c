@@ -20,12 +20,13 @@ void field_counter (void *s, size_t len, void *data) {
   i++;
   */
 }
+
 void row_counter (int c, void *data) {
   ((struct counts *)data)->rows++;
  }
 
 void country_loader(FILE * csv){
-  
+
 }
 
 bool country_checker(char* entry){
