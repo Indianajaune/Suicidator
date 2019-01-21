@@ -24,6 +24,8 @@ int main(int argc, char *argv[]) {
     size_t bytes_read;
     unsigned char options = 0;
     struct counts c = {0, 0};
+    int choice;
+
 
     if (argc < 2) {
       fprintf(stderr, "Utilisation: ./infosuicide [-s] files\n");
@@ -34,9 +36,6 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Echec de l'initialisation de l'analyseur CSV \n");
       exit(EXIT_FAILURE);
     }
-
-    //PERSON q;
-    int choice;
 
 
     csv_set_space_func(&p, is_space);
@@ -73,15 +72,23 @@ int main(int argc, char *argv[]) {
 
     }
     csv_free(&p);
+    if((c.fields==0)||(c.rows==0)){
+      fprintf(stderr, "Fichier vide ou non valide \n" );
+      sleep(3);
+      exit(EXIT_FAILURE);
+    }
+    ENTRY data[50000] ;
+
+    if (csvToStruct(data, "who_suicide_statistics.csv",c.rows)==false){
+      exit(EXIT_FAILURE);
+    }else
+
     t = clock()-t;
     printf("%sFichier countenant %lu colonnes et %lu lignes \n",KYEL,c.fields,c.rows);
     printf("Initialise en %ld ticks (%f seconds) \n",t,((float)t)/CLOCKS_PER_SEC);
     sleep(3);
-    if((c.fields==0)||(c.rows==0)){
-      exit(EXIT_FAILURE);
-    }
-    menu(&choice);
 
+    menu(&choice);
 
 
     switch(choice){
@@ -91,13 +98,7 @@ int main(int argc, char *argv[]) {
         return(0);
         break;
     case 1 :
-
-        fp = fopen(*argv, "r");
-        if (!fp) {
-          fprintf(stderr, "Echec de l'ouverture de %s: %s\n", *argv, strerror(errno));
-        }
-
-        fclose(fp);
+      display_data(data,c.rows);
       /*
         system("clear");
         printf("Veuillez entrer vos donnees : \n");
