@@ -8,8 +8,6 @@
 #include <unistd.h>
 #include <regex.h>
 #include "libcsv/csv.h"
-#include "darknet/include/darknet.h"
-#include "naivebayes.c"
 
 //utilise pour coloriser le terminal
 #define KNRM  "\x1B[0m"
@@ -50,7 +48,7 @@ void field_counter (void *s, size_t len, void *data);
 void row_counter (int c, void *data);
 
 
-
+void naivebayes(ENTRY * data,unsigned long max, PERSON p);
 
 //sert a verifier si le pays est valide
 bool country_checker(char*);
@@ -68,7 +66,12 @@ void display_data(ENTRY * data, long unsigned max);
 
 bool csvToStruct(ENTRY *data, char *path_to_file, long unsigned max);
 
+
+float compute_suicide_rate(ENTRY * data, unsigned int max,char country[50],unsigned int year);
+
+
 void display_suicide_rate(ENTRY * data, unsigned int max,char country[50],unsigned int year);
+
 
 void display_parity(ENTRY * data, unsigned int max,char country[50]);
 

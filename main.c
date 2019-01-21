@@ -123,8 +123,13 @@ int main(int argc, char *argv[]) {
         choice = 0;
         break;
     case 4 :
+        display_data(data,c.rows);
+        choice = 0;
         break;
     case 5 :
+        q=information_asker();
+        naivebayes(data,c.rows,q);
+        choice = 0;
 
         break;
     default :

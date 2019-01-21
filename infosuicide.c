@@ -19,8 +19,8 @@ bool sex_asker(){
     char sex;
     bool result;
     while((((sex=='M')||(sex=='m'))||((sex=='F')||(sex=='f')))^true){
+
     printf("\n Votre sexe (M/F) : \n");
-    sleep(1);
     scanf("%c",&sex);
     }
     if((sex=='M')||(sex=='m')){
@@ -185,7 +185,7 @@ PERSON information_asker(){
   PERSON p;
   p.sex=sex_asker();
   printf("Entrez  l'âge de la personne : \t");
-  scanf("%u",&p.age);
+  scanf("%hu",&p.age);
   if(p.age<=14){
     p.age=1;
   }else if((p.age >= 15)&&(p.age<=24)){
@@ -204,6 +204,35 @@ PERSON information_asker(){
   return(p);
 }
 
+void naivebayes(ENTRY * data,unsigned long max,PERSON p){
+  unsigned int i;
+  float suicide_rate;
+  for(i=1;i<max-1;i++){
+    if((data[i].dead.sex==p.sex)&&(p.age==data[i].dead.age)){
+      suicide_rate=compute_suicide_rate(data,max,p.country,p.year);
+    }
+  }
+  printf("\n Votre taux de suicide est de %f \n",suicide_rate);
+}
+
+
+float compute_suicide_rate(ENTRY * data, unsigned int max,char country[50],unsigned int year){
+  unsigned int i;
+  unsigned long int population=0,deathes=0;
+  for(i=1;i<max-1;i++){
+    if((strcmp(country,data[i].dead.country)==0)&&(data[i].dead.year==year))
+    {
+        population=population+data[i].population;
+        deathes=deathes+data[i].suicides_no;
+
+
+    }
+  }
+  return((float)deathes/(float)population);
+
+}
+
+
 void display_suicide_rate(ENTRY * data, unsigned int max,char country[50],unsigned int year){
   unsigned int i;
   unsigned long int population=0,deathes=0;
@@ -218,9 +247,9 @@ void display_suicide_rate(ENTRY * data, unsigned int max,char country[50],unsign
     }
   }
   suicide_rate=(float)deathes/(float)population;
-  printf("\npopulation : %i",population);
-  printf("\nmorts : %i",deathes);
-  printf("\n taux de suicide : %f %\n",suicide_rate);
+  printf("\npopulation : %i",(int)population);
+  printf("\nmorts : %i",(int)deathes);
+  printf("\n taux de suicide : %f %\n",(float)suicide_rate);
 }
 
 
@@ -249,8 +278,8 @@ void display_parity(ENTRY * data, unsigned int max,char country[50]){
   population = population_f  + population_m;
   suicide_rate_m=(float)deathes_m/(float)deathes;
   suicide_rate_f=(float)deathes_f/(float)deathes;
-  printf("\npopulation : %i de femmes , %i d'hommes",population_f,population_m);
-  printf("\nmorts : %i de femmes , %i  d'hommes",deathes_f, deathes_m);
+  printf("\npopulation : %ld de femmes , %ld d'hommes",population_f,population_m);
+  printf("\nmorts : %ld de femmes , %ld  d'hommes",deathes_f, deathes_m);
   printf("\ntaux de suicide : %f pour cent de femmes , %f pour cent d'hommes\n",suicide_rate_f ,suicide_rate_m);
 
 }
