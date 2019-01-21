@@ -2,33 +2,9 @@
 
 
 
-void field_counter (void *s, size_t len, void *data) {
-   ((struct counts *)data)->fields++;
+void field_counter (void *s, size_t len, void *data) { ((struct counts *)data)->fields++; }
 
-  // static unsigned short int i;
-  // if(((i==0)||(i==1)||(i==2)||(i==3)||(i==4)||(i==5))^true)
-  // {
-  //   printf("%.*s\n", len, data);
-  // }
-  // if(i==5){
-  //   i=0;
-  // }
-  // if(i==8){
-  // printf("%u \t",i);
-  // printf(strcat(((char *)s),"\t"));
-  // sleep(1);
-  // }
-  // i++;
-
-}
-
-void row_counter (int c, void *data) {
-  ((struct counts *)data)->rows++;
- }
-
-
-
-
+void row_counter (int c, void *data) { ((struct counts *)data)->rows++; }
 
 
 bool country_checker(char* entry){
@@ -44,6 +20,7 @@ bool sex_asker(){
     bool result;
     while((((sex=='M')||(sex=='m'))||((sex=='F')||(sex=='f')))^true){
     printf("\n Votre sexe (M/F) : \n");
+    sleep(1);
     scanf("%c",&sex);
     }
     if((sex=='M')||(sex=='m')){
@@ -146,7 +123,7 @@ bool csvToStruct(ENTRY *data, char *path_to_file, long unsigned max) {
           j=0;
           break;
         default :
-          printf("Something's wrong");
+          printf("Something's wrong \n");
           exit(EXIT_FAILURE);
           break;
       }
@@ -204,6 +181,80 @@ void display_data(ENTRY * data, long unsigned max){
 
 }
 
+PERSON information_asker(){
+  PERSON p;
+  p.sex=sex_asker();
+  printf("Entrez  l'âge de la personne : \t");
+  scanf("%u",&p.age);
+  if(p.age<=14){
+    p.age=1;
+  }else if((p.age >= 15)&&(p.age<=24)){
+    p.age=2;
+  }else if((p.age>=25)&&(p.age<=34)){
+    p.age=3;
+  }else if((p.age>=35)&&(p.age<=54)){
+    p.age=4;
+  }else if((p.age>=55)&&(p.age<=74)){
+    p.age=5;
+  }else p.age = 6;
+  printf("\n entrez le pays : \t");
+  scanf (" %[^\t\n]s", &p.country);
+  printf("\n entrez l'année :  \t");
+  scanf("%u",&p.year);
+  return(p);
+}
+
+void display_suicide_rate(ENTRY * data, unsigned int max,char country[50],unsigned int year){
+  unsigned int i;
+  unsigned long int population=0,deathes=0;
+  float suicide_rate;
+  for(i=1;i<max-1;i++){
+    if((strcmp(country,data[i].dead.country)==0)&&(data[i].dead.year==year))
+    {
+        population=population+data[i].population;
+        deathes=deathes+data[i].suicides_no;
+
+
+    }
+  }
+  suicide_rate=(float)deathes/(float)population;
+  printf("\npopulation : %i",population);
+  printf("\nmorts : %i",deathes);
+  printf("\n taux de suicide : %f %\n",suicide_rate);
+}
+
+
+void display_parity(ENTRY * data, unsigned int max,char country[50]){
+  unsigned int i;
+  unsigned long int population_m=0,deathes_m=0,population_f=0,deathes_f=0,population=0,deathes=0;
+  float suicide_rate_m,suicide_rate_f;
+  for(i=1;i<max-1;i++){
+    if((strcmp(country,data[i].dead.country)==0)&&(data[i].dead.sex==true))
+    {
+        population_m=population_m+data[i].population;
+        deathes_m=deathes_m+data[i].suicides_no;
+
+
+    }
+
+    if((strcmp(country,data[i].dead.country)==0)&&(data[i].dead.sex==false))
+    {
+        population_f=population_f+data[i].population;
+        deathes_f=deathes_f+data[i].suicides_no;
+
+
+    }
+  }
+  deathes = deathes_m+deathes_f;
+  population = population_f  + population_m;
+  suicide_rate_m=(float)deathes_m/(float)deathes;
+  suicide_rate_f=(float)deathes_f/(float)deathes;
+  printf("\npopulation : %i de femmes , %i d'hommes",population_f,population_m);
+  printf("\nmorts : %i de femmes , %i  d'hommes",deathes_f, deathes_m);
+  printf("\ntaux de suicide : %f pour cent de femmes , %f pour cent d'hommes\n",suicide_rate_f ,suicide_rate_m);
+
+}
+
 void menu(int* choice){
   system("clear");
   printf("%s ██▓ ███▄    █   █████▒▒█████    ██████  █    ██  ██▓ ▄████▄   ██▓▓█████▄ ▓█████ \n▓██▒ ██ ▀█   █ ▓██   ▒▒██▒  ██▒▒██    ▒  ██  ▓██▒▓██▒▒██▀ ▀█  ▓██▒▒██▀ ██▌▓█   ▀ \n▒██▒▓██  ▀█ ██▒▒████ ░▒██░  ██▒░ ▓██▄   ▓██  ▒██░▒██▒▒▓█    ▄ ▒██▒░██   █▌▒███   \n░██░▓██▒  ▐▌██▒░▓█▒  ░▒██   ██░  ▒   ██▒▓▓█  ░██░░██░▒▓▓▄ ▄██▒░██░░▓█▄   ▌▒▓█  ▄ \n░██░▒██░   ▓██░░▒█░   ░ ████▓▒░▒██████▒▒▒▒█████▓ ░██░▒ ▓███▀ ░░██░░▒████▓ ░▒████▒\n░▓  ░ ▒░   ▒ ▒  ▒ ░   ░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░▓  ░ ░▒ ▒  ░░▓   ▒▒▓  ▒ ░░ ▒░ ░\n ▒ ░░ ░░   ░ ▒░ ░       ░ ▒ ▒░ ░ ░▒  ░ ░░░▒░ ░ ░  ▒ ░  ░  ▒    ▒ ░ ░ ▒  ▒  ░ ░  ░\n ▒ ░   ░   ░ ░  ░ ░   ░ ░ ░ ▒  ░  ░  ░   ░░░ ░ ░  ▒ ░░         ▒ ░ ░ ░  ░    ░   \n ░           ░            ░ ░        ░     ░      ░  ░ ░       ░     ░       ░  ░\n                                                     ░             ░             \n", KRED);
@@ -213,7 +264,7 @@ void menu(int* choice){
   printf("\t %sBienvenue dans l'application InfoSuicide : \n", KNRM);
   printf("Menu : \n");
   printf("0. Quitter l'application\n");
-  printf("1. Nombre de suicides selon des critères\n");
+  printf("1. Afficher les données\n");
   printf("2. Afficher le taux de suicide par année d'un pays\n");
   printf("3. Afficher la répartition de suicides par sexe pour un pays\n");
   printf("4. Trier (et afficher) les taux de suicide par ordre décroissant\n");

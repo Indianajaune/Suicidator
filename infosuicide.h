@@ -9,6 +9,7 @@
 #include <regex.h>
 #include "libcsv/csv.h"
 #include "darknet/include/darknet.h"
+#include "naivebayes.c"
 
 //utilise pour coloriser le terminal
 #define KNRM  "\x1B[0m"
@@ -50,15 +51,26 @@ void row_counter (int c, void *data);
 
 
 
+
 //sert a verifier si le pays est valide
 bool country_checker(char*);
+
+//sert a demander ls informations de l'utilisateur
+PERSON information_asker();
+
 
 //sert a a demander a l'utilisateur le sexe en format "M/F" pour ensuite le restituer en booleen
 bool sex_asker();
 
+//sert a afficher le CSV dans la console
 void display_data(ENTRY * data, long unsigned max);
 
 
 bool csvToStruct(ENTRY *data, char *path_to_file, long unsigned max);
+
+void display_suicide_rate(ENTRY * data, unsigned int max,char country[50],unsigned int year);
+
+void display_parity(ENTRY * data, unsigned int max,char country[50]);
+
 //sert a afficher le menu
 void menu(int*);

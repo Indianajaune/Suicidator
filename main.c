@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     unsigned char options = 0;
     struct counts c = {0, 0};
     int choice;
+    PERSON q;
 
     //Message affiché si aucun fichier fourni en argument
     if (argc < 2) {
@@ -107,65 +108,24 @@ int main(int argc, char *argv[]) {
         break;
     case 1 :
       display_data(data,c.rows);
-      /*
-        system("clear");
-        printf("Veuillez entrer vos donnees : \n");
-        printf("Votre age : \n");
-        scanf("%d", &q.age);
-        q.sex=sex_asker();
-        printf("\n Votre Pays : \n");
-            scanf("%s", &q.country);
-            country_checker(q.country);
-        printf("Votre annee : \n");
-        scanf("%f", year);
-        q.year = year;
-        */
+      choice = 0;
         break;
     case 2 :
-    /*
-        system("clear");
-        printf("Veuillez entrer vos donnees : \n");
-        printf("\n Votre Pays : \n");
-        scanf("%s", &q.country);
-        country_checker(q.country);
-        printf("Votre annee : \n");
-        scanf("%f", year);
-        q.year = year;
-        */
+      q=information_asker();
+      printf((char *)q.country);
+      display_suicide_rate(data,c.rows,q.country,q.year);
+      choice = 0;
         break;
     case 3 :
-    /*
-        printf("\n Votre Pays : \n");
-        scanf("%s", &q.country);
-        country_checker(q.country);
-        */
+        printf("Entrez un pays : \t");
+        scanf (" %[^\t\n]s", &q.country);
+        display_parity(data, c.rows, q.country);
+        choice = 0;
         break;
     case 4 :
         break;
     case 5 :
-    /*
-        system("clear");
-        printf("Veuillez entrer vos donnees : \n");
-        printf("Votre age : \n");
-        scanf("%d", &q.age);
-        printf("\n Votre sexe (M/F) : \n");
-        scanf("%d", sex);
-        if ((strcmp(sex, "M") != 0) && (strcmp(sex, "F") != 0)) {
-            scanf("%d", sex);
-        }
-        else if (strcmp(sex, "F") == 0) {
-            q.sex = true;
-        }
-        else if (strcmp(sex, "M") == 0) {
-            q.sex = false;
-        }
-        printf("\n Votre Pays : \n");
-        scanf("%s", &q.country);
-        country_checker(q.country);
-        printf("Votre annee : \n");
-        scanf("%f", year);
-        q.year = year;
-        */
+
         break;
     default :
         printf("test");
