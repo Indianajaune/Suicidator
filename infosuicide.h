@@ -56,7 +56,7 @@ bool country_checker(char*);
 //sert a a demander a l'utilisateur le sexe en format "M/F" pour ensuite le restituer en booleen
 bool sex_asker();
 
-display_data(ENTRY * data, long unsigned max);
+void display_data(ENTRY * data, long unsigned max);
 
 
 bool csvToStruct(ENTRY *data, char *path_to_file, long unsigned max);

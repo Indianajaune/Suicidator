@@ -26,9 +26,6 @@ void row_counter (int c, void *data) {
   ((struct counts *)data)->rows++;
  }
 
- void field_saver(void *s, size_t len, void *data){
-
- }
 
 
 
@@ -71,19 +68,21 @@ bool csvToStruct(ENTRY *data, char *path_to_file, long unsigned max) {
   }
 
   for(i=0;i<((unsigned int)max)-1 ;i++){
-  while (fgets(buf, sizeof buf, file) != NULL)
-    if (++line_count >= i)
+  while (fgets(buf, sizeof buf, file) != NULL){
+    if(++line_count >= i){
       break;
-      printf(buf);
-      const char delim[2] = ",";
+    }
+  }
+
+    const char delim[2] = ",";
 
 
-      /* get the first token */
+
       token = strtok(buf, delim);
 
-      /* walk through other tokens */
+
       while( token != NULL ) {
-      printf( " %s\n", token );
+
 
       switch(j){
         case 0 :
@@ -134,13 +133,13 @@ bool csvToStruct(ENTRY *data, char *path_to_file, long unsigned max) {
 
           break;
         case 4 :
-          data[i].suicides_no= (unsigned int)atoi(token);
+          data[i].suicides_no=(unsigned int)atoi(token);
           token = strtok(NULL, delim);
           j++;
 
           break;
         case 5 :
-          data[i].population= (int)atoi(token);
+          data[i].population=(int)atoi(token);
 
           token = strtok(NULL, delim);
 
@@ -168,7 +167,7 @@ bool csvToStruct(ENTRY *data, char *path_to_file, long unsigned max) {
   return true;
 }
 
-display_data(ENTRY * data, long unsigned max){
+void display_data(ENTRY * data, long unsigned max){
   long unsigned i;
   for(i=0;i< max- 1;i++){
   printf("country : %s\t", data[i].dead.country);

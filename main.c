@@ -26,21 +26,22 @@ int main(int argc, char *argv[]) {
     struct counts c = {0, 0};
     int choice;
 
-
+    //Message affiché si aucun fichier fourni en argument
     if (argc < 2) {
       fprintf(stderr, "Utilisation: ./infosuicide [-s] files\n");
       exit(EXIT_FAILURE);
     }
-
+    //Message affiché si problème à l'init dee l'analyseur
     if (csv_init(&p, options) != 0) {
       fprintf(stderr, "Echec de l'initialisation de l'analyseur CSV \n");
       exit(EXIT_FAILURE);
     }
 
-
+    //Sert à affectr les caractères utiles du format CSV
     csv_set_space_func(&p, is_space);
     csv_set_term_func(&p, is_term);
 
+    //Gestion du mode "strict" et des paramètres de libcsv (à ignorer pour l'instant)
     while (*(++argv)) {
       if (strcmp(*argv, "-s") == 0) {
         options = CSV_STRICT;
@@ -54,12 +55,14 @@ int main(int argc, char *argv[]) {
         continue;
       }
 
+      //appel de l'analyseur CSV sur le fichier fourni en argument avec les fonctions de callbacks de décompte des lignes et colonnes
       while ((bytes_read=fread(buf, 1, 1024, fp)) > 0) {
         if (csv_parse(&p, buf, bytes_read, field_counter, row_counter, &c) != bytes_read) {
           fprintf(stderr, "Erreur lors de l'analyse du fichier: %s\n", csv_strerror(csv_error(&p)));
         }
       }
 
+      //sert a terminer le process précédent
       csv_fini(&p, field_counter, row_counter, &c);
 
       if (ferror(fp)) {
@@ -71,22 +74,27 @@ int main(int argc, char *argv[]) {
       fclose(fp);
 
     }
+
     csv_free(&p);
+    //test de validité du fichier (si il est vide, le programme se termine)
     if((c.fields==0)||(c.rows==0)){
       fprintf(stderr, "Fichier vide ou non valide \n" );
       sleep(3);
       exit(EXIT_FAILURE);
     }
+    //init du tableau qui garde les données du CSV dans la RAM
     ENTRY data[50000] ;
-
+    //affectation du tableau avec les données du fichier CSV
     if (csvToStruct(data, "who_suicide_statistics.csv",c.rows)==false){
       exit(EXIT_FAILURE);
     }else
-
+    //fin du décompte, est utile pour voir le temps qu'a mis le process d'init
     t = clock()-t;
+    //on affiche les données du CSV ainsi que le temps que le temps d'init
     printf("%sFichier countenant %lu colonnes et %lu lignes \n",KYEL,c.fields,c.rows);
     printf("Initialise en %ld ticks (%f seconds) \n",t,((float)t)/CLOCKS_PER_SEC);
-    sleep(3);
+    //sert a afficher temporairement les données précédentes avant de passer au menu
+    sleep(4);
 
     menu(&choice);
 
